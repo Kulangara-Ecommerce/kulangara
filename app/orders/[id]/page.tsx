@@ -169,27 +169,28 @@ export default function OrderConfirmationPage() {
   const isReturnEligible = deliveredDate ? diffDays !== null && diffDays <= 30 : false;
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl mt-24">
+    <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-7xl mt-16 sm:mt-24">
       {/* Back Button */}
       <Button 
         variant="ghost" 
         onClick={() => router.back()} 
-        className="mb-4 -ml-2"
+        className="mb-3 sm:mb-4 -ml-2 text-xs sm:text-sm px-2 sm:px-4"
       >
-        <FiArrowLeft className="mr-2 h-4 w-4" />
-        Back to Orders
+        <FiArrowLeft className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+        <span className="hidden min-[375px]:inline">Back to Orders</span>
+        <span className="min-[375px]:hidden">Back</span>
       </Button>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-6">
         {/* Left Column - Order Details */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-3 sm:space-y-6">
           {/* Order Header with Status */}
           <Card>
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <h1 className="text-3xl font-bold mb-2">Order #{order.orderNumber}</h1>
-                  <p className="text-sm text-muted-foreground">
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex flex-col min-[375px]:flex-row min-[375px]:items-start min-[375px]:justify-between gap-2 min-[375px]:gap-0 mb-3 sm:mb-4">
+                <div className="min-w-0 flex-1">
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-1 sm:mb-2 break-words">Order #{order.orderNumber}</h1>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     Placed on {new Date(order.createdAt).toLocaleDateString('en-US', { 
                       weekday: 'long',
                       month: 'long', 
@@ -198,24 +199,26 @@ export default function OrderConfirmationPage() {
                     })}
                   </p>
                 </div>
-                <Badge variant={getStatusVariant(order.status)} className="text-sm px-4 py-2">
+                <Badge variant={getStatusVariant(order.status)} className="text-xs sm:text-sm px-2 sm:px-4 py-1 sm:py-2 whitespace-nowrap self-start min-[375px]:self-auto">
                   {order.status}
                 </Badge>
               </div>
               
               {deliveredDate && (
                 <Alert className={isReturnEligible ? "border-blue-200 bg-blue-50" : "border-orange-200 bg-orange-50"}>
-                  <AlertDescription className="text-sm">
+                  <AlertDescription className="text-xs sm:text-sm">
                     <strong>Delivery Date:</strong> {deliveredDate.toLocaleDateString(undefined, { 
                       month: 'long', 
                       day: 'numeric',
                       year: 'numeric'
                     })}
-                    {isReturnEligible ? (
-                      <span className="ml-2 text-blue-700">• Eligible for return/exchange (30 days)</span>
-                    ) : (
-                      <span className="ml-2 text-orange-700">• Return/exchange period expired</span>
-                    )}
+                    <span className={`ml-1 sm:ml-2 block min-[375px]:inline ${isReturnEligible ? "text-blue-700" : "text-orange-700"}`}>
+                      {isReturnEligible ? (
+                        <>• Eligible for return/exchange (30 days)</>
+                      ) : (
+                        <>• Return/exchange period expired</>
+                      )}
+                    </span>
                   </AlertDescription>
                 </Alert>
               )}
@@ -224,14 +227,14 @@ export default function OrderConfirmationPage() {
 
           {/* Order Items */}
           <Card>
-            <CardHeader>
-              <CardTitle>Order Items ({order.items.length})</CardTitle>
+            <CardHeader className="p-3 sm:p-6 pb-2 sm:pb-3">
+              <CardTitle className="text-base sm:text-lg">Order Items ({order.items.length})</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="p-3 sm:p-6 pt-2 sm:pt-0 space-y-3 sm:space-y-4">
               {order.items.map((item: IOrderItem, index: number) => (
                 <div key={index}>
-                  <div className="flex gap-4">
-                    <div className="relative w-24 h-24 rounded-lg border overflow-hidden flex-shrink-0 bg-muted">
+                  <div className="flex flex-col min-[375px]:flex-row gap-2 sm:gap-4">
+                    <div className="relative w-20 h-20 min-[375px]:w-24 min-[375px]:h-24 rounded-lg border overflow-hidden flex-shrink-0 bg-muted self-start">
                       <Image
                         src={item.product?.images?.[0]?.url || "/images/coming-soon.jpg"}
                         alt={item.product?.name || "Product"}
@@ -239,69 +242,69 @@ export default function OrderConfirmationPage() {
                         className="object-cover"
                       />
                     </div>
-                    <div className="flex-grow">
-                      <h3 className="font-semibold text-base">{item.product?.name}</h3>
-                      <div className="flex gap-3 mt-2 text-sm text-muted-foreground">
+                    <div className="flex-grow min-w-0">
+                      <h3 className="font-semibold text-sm sm:text-base break-words">{item.product?.name}</h3>
+                      <div className="flex flex-wrap gap-1.5 sm:gap-3 mt-1 sm:mt-2 text-xs sm:text-sm text-muted-foreground">
                         <span>Size: {item.variant?.size || "N/A"}</span>
-                        <span>•</span>
+                        <span className="hidden min-[375px]:inline">•</span>
                         <span>Color: {item.variant?.color || "Standard"}</span>
-                        <span>•</span>
+                        <span className="hidden min-[375px]:inline">•</span>
                         <span>Qty: {item.quantity}</span>
                       </div>
                       {order.status === 'DELIVERED' && (
                         <Button 
                           size="sm" 
                           variant="outline" 
-                          className="mt-3" 
+                          className="mt-2 sm:mt-3 text-xs sm:text-sm h-7 sm:h-9 px-2 sm:px-3" 
                           onClick={() => handleRateProduct(item.product?.id || item.productId)}
                         >
                           Rate this product
                         </Button>
                       )}
                     </div>
-                    <div className="text-right">
-                      <p className="font-bold text-lg">₹{(item.price * item.quantity).toLocaleString()}</p>
-                      <p className="text-sm text-muted-foreground">₹{item.price.toLocaleString()} each</p>
+                    <div className="text-left min-[375px]:text-right self-start min-[375px]:self-auto">
+                      <p className="font-bold text-base sm:text-lg">₹{(item.price * item.quantity).toLocaleString()}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground">₹{item.price.toLocaleString()} each</p>
                     </div>
                   </div>
-                  {index < order.items.length - 1 && <Separator className="mt-4" />}
+                  {index < order.items.length - 1 && <Separator className="mt-3 sm:mt-4" />}
                 </div>
               ))}
             </CardContent>
           </Card>
 
           {/* Shipping & Payment Info Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
             <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Shipping Address</CardTitle>
+              <CardHeader className="p-3 sm:p-6 pb-2 sm:pb-3">
+                <CardTitle className="text-sm sm:text-base">Shipping Address</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-1">
-                <p className="font-semibold">{order.shippingAddress.firstName} {order.shippingAddress.lastName}</p>
-                <p className="text-sm text-muted-foreground">{order.shippingAddress.address}</p>
+              <CardContent className="p-3 sm:p-6 pt-2 sm:pt-0 space-y-1">
+                <p className="font-semibold text-sm sm:text-base">{order.shippingAddress.firstName} {order.shippingAddress.lastName}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground break-words">{order.shippingAddress.address}</p>
                 {order.shippingAddress.apartment && (
-                  <p className="text-sm text-muted-foreground">{order.shippingAddress.apartment}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground break-words">{order.shippingAddress.apartment}</p>
                 )}
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.pincode}
                 </p>
-                <p className="text-sm text-muted-foreground">{order.shippingAddress.phone}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">{order.shippingAddress.phone}</p>
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Payment Details</CardTitle>
+              <CardHeader className="p-3 sm:p-6 pb-2 sm:pb-3">
+                <CardTitle className="text-sm sm:text-base">Payment Details</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Payment Method</span>
-                  <span className="font-medium uppercase">{order.paymentMethod}</span>
+              <CardContent className="p-3 sm:p-6 pt-2 sm:pt-0 space-y-2 sm:space-y-3">
+                <div className="flex justify-between items-center flex-wrap gap-1">
+                  <span className="text-xs sm:text-sm text-muted-foreground">Payment Method</span>
+                  <span className="font-medium text-xs sm:text-sm uppercase break-words">{order.paymentMethod}</span>
                 </div>
                 <Separator />
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Payment Status</span>
-                  <Badge variant={getPaymentStatusVariant(order.paymentStatus)}>
+                <div className="flex justify-between items-center flex-wrap gap-1">
+                  <span className="text-xs sm:text-sm text-muted-foreground">Payment Status</span>
+                  <Badge variant={getPaymentStatusVariant(order.paymentStatus)} className="text-xs">
                     {order.paymentStatus}
                   </Badge>
                 </div>
@@ -311,46 +314,46 @@ export default function OrderConfirmationPage() {
         </div>
 
         {/* Right Column - Summary & Tracking */}
-        <div className="space-y-6">
+        <div className="space-y-3 sm:space-y-6">
           {/* Order Summary */}
-          <Card className="sticky top-24">
-            <CardHeader>
-              <CardTitle>Order Summary</CardTitle>
+          <Card className="sticky top-16 sm:top-24">
+            <CardHeader className="p-3 sm:p-6 pb-2 sm:pb-3">
+              <CardTitle className="text-base sm:text-lg">Order Summary</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-3">
-                <div className="flex justify-between text-sm">
+            <CardContent className="p-3 sm:p-6 pt-2 sm:pt-0 space-y-3 sm:space-y-4">
+              <div className="space-y-2 sm:space-y-3">
+                <div className="flex justify-between text-xs sm:text-sm">
                   <span className="text-muted-foreground">Subtotal</span>
                   <span className="font-medium">₹{order.subtotal.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between text-xs sm:text-sm">
                   <span className="text-muted-foreground">Shipping</span>
                   <span className="font-medium text-green-600">
                     {order.shippingFee === 0 ? "FREE" : `₹${order.shippingFee.toLocaleString()}`}
                   </span>
                 </div>
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between text-xs sm:text-sm">
                   <span className="text-muted-foreground">Tax</span>
                   <span className="font-medium">₹{order.taxAmount.toLocaleString()}</span>
                 </div>
                 {order.discountAmount > 0 && (
-                  <div className="flex justify-between text-sm text-green-600">
+                  <div className="flex justify-between text-xs sm:text-sm text-green-600">
                     <span>Discount</span>
                     <span className="font-medium">-₹{order.discountAmount.toLocaleString()}</span>
                   </div>
                 )}
                 <Separator />
-                <div className="flex justify-between pt-2">
-                  <span className="font-semibold text-lg">Total</span>
-                  <span className="font-bold text-2xl">₹{order.totalAmount.toLocaleString()}</span>
+                <div className="flex justify-between pt-1 sm:pt-2">
+                  <span className="font-semibold text-base sm:text-lg">Total</span>
+                  <span className="font-bold text-xl sm:text-2xl">₹{order.totalAmount.toLocaleString()}</span>
                 </div>
               </div>
 
               <Separator />
 
               {/* Action Buttons */}
-              <div className="space-y-2">
-                <Button onClick={handleTrackOrder} variant="outline" className="w-full">
+              <div className="space-y-1.5 sm:space-y-2">
+                <Button onClick={handleTrackOrder} variant="outline" className="w-full text-xs sm:text-sm h-8 sm:h-10">
                   Refresh Tracking
                 </Button>
                 {order.status === "PENDING" && (
@@ -358,7 +361,7 @@ export default function OrderConfirmationPage() {
                     onClick={handleCancelOrder} 
                     variant="destructive" 
                     disabled={loading} 
-                    className="w-full"
+                    className="w-full text-xs sm:text-sm h-8 sm:h-10"
                   >
                     {loading ? "Cancelling..." : "Cancel Order"}
                   </Button>
@@ -366,7 +369,7 @@ export default function OrderConfirmationPage() {
                 <Button 
                   onClick={() => (window.location.href = "/")} 
                   variant="outline" 
-                  className="w-full"
+                  className="w-full text-xs sm:text-sm h-8 sm:h-10"
                 >
                   Continue Shopping
                 </Button>
@@ -375,11 +378,11 @@ export default function OrderConfirmationPage() {
           </Card>
 
           {/* Order Tracking */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Order Tracking</CardTitle>
+          <Card className="flex flex-col h-[280px] min-[375px]:h-[300px] sm:h-[350px] lg:h-[400px]">
+            <CardHeader className="p-3 sm:p-6 pb-2 sm:pb-3 flex-shrink-0">
+              <CardTitle className="text-base sm:text-lg">Order Tracking</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-3 sm:p-6 pt-0 flex-1 overflow-y-auto min-h-0">
               <OrderTrackingComponent tracking={tracking} currentStatus={order.status} />
             </CardContent>
           </Card>
