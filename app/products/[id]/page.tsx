@@ -2,12 +2,9 @@
 
 import { notFound } from "next/navigation";
 import { use, useState } from "react";
-import { useRouter } from "next/navigation";
 import { useProduct } from "@/app/hooks/useProducts";
 import { useReviews } from "@/app/hooks/useReviews";
 import { useAddToCart } from "@/app/hooks/useCart";
-import { useAppDispatch } from "@/app/store/hooks";
-import { fetchCart, clearCart } from "@/app/store/slices/cartSlice";
 import { Button } from "@/app/components/ui/button";
 import ProductReviews from "@/app/components/ui/ProductReviews";
 import {
@@ -23,7 +20,6 @@ import {
   FaMinus,
   FaPlus,
   FaShoppingBag,
-  FaBolt,
 } from "react-icons/fa";
 import Image from "next/image";
 import {
@@ -50,8 +46,6 @@ type Params = { id: string };
 
 export default function ProductPage({ params }: { params: Promise<Params> }) {
   const { id } = use(params);
-  const router = useRouter();
-  const dispatch = useAppDispatch();
   const { data: product, isLoading, error } = useProduct(id);
   const { data: reviewsData } = useReviews(id);
   const { data: wishlistResponse } = useWishlist();
@@ -245,6 +239,7 @@ export default function ProductPage({ params }: { params: Promise<Params> }) {
     }
   };
 
+  /*
   const handleBuyNow = async () => {
     if (hasFits && !selectedFit) {
       toast.error("Please select a fit (Normal or Oversized)");
@@ -306,6 +301,7 @@ export default function ProductPage({ params }: { params: Promise<Params> }) {
       }
     }
   };
+  */
 
   const renderStars = (rating: number, size: "sm" | "md" | "lg" = "md") => {
     const sizeClasses = {
@@ -705,11 +701,12 @@ export default function ProductPage({ params }: { params: Promise<Params> }) {
                   ? "Out of Stock"
                   : "Add to Cart"}
               </Button>
+              {/* Buy Now kept commented for future use
               <Button
                 variant="outline"
                 size="lg"
                 onClick={handleBuyNow}
-                className="flex-1 h-14 p-2 text-base font-semibold border-2 hover:bg-primary  hover:border-primary transition-all"
+                className="flex-1 h-14 p-2 text-base font-semibold border-2 hover:bg-primary hover:border-primary transition-all"
                 disabled={
                   (hasFits && !selectedFit) || !selectedSize || cartLoading || stockInfo?.stockQuantity === 0
                 }
@@ -721,6 +718,7 @@ export default function ProductPage({ params }: { params: Promise<Params> }) {
                   ? "Out of Stock"
                   : "Buy Now"}
               </Button>
+              */}
             </div>
             {(hasFits && !selectedFit) || !selectedSize ? (
               <div className="bg-destructive/10 border border-destructive/30 rounded-lg px-4 py-3 text-center">
