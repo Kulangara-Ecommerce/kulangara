@@ -340,6 +340,10 @@ export const useCheckout = () => {
         } catch {
           // ignore
         }
+        await Promise.all([
+          queryClient.invalidateQueries({ queryKey: ["orders"] }),
+          queryClient.invalidateQueries({ queryKey: ["admin-orders"] }),
+        ]);
         dispatch(fetchCartThunk());
         toast.success("Order placed successfully!");
 
@@ -362,6 +366,10 @@ export const useCheckout = () => {
         } catch {
           // ignore
         }
+        await Promise.all([
+          queryClient.invalidateQueries({ queryKey: ["orders"] }),
+          queryClient.invalidateQueries({ queryKey: ["admin-orders"] }),
+        ]);
         dispatch(fetchCartThunk());
         toast.success("Order placed successfully!");
 
