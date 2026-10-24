@@ -96,9 +96,7 @@ export default function AdminOrdersPage() {
   // Helper to get product names (truncated)
   const getProductNames = (items: IOrder["items"]) => {
     if (!items || items.length === 0) return "-";
-    const names = items.map((item) => item.product?.name || "");
-    if (names.length <= 2) return names.join(", ");
-    return `${names.slice(0, 2).join(", ")} +${names.length - 2} more`;
+    return items.map((item) => item.product?.name || "").join(", ");
   };
 
   const getTotalQuantity = (items: IOrder["items"]) => {
@@ -108,9 +106,7 @@ export default function AdminOrdersPage() {
   const getOrderSizes = (items: IOrder["items"]) => {
     if (!items || items.length === 0) return "-";
     const sizes = items.map((item) => item.size ?? item.variant?.size ?? "—");
-    const uniqueSizes = [...new Set(sizes)];
-    if (uniqueSizes.length <= 2) return uniqueSizes.join(", ");
-    return `${uniqueSizes.slice(0, 2).join(", ")} +${uniqueSizes.length - 2}`;
+    return [...new Set(sizes)].join(", ");
   };
 
   const getOrderFit = (items: IOrder["items"]) => {
