@@ -104,10 +104,13 @@ export interface ITrackingHistoryItem {
     createdAt: string;
 }
 
+export type OrderGroup = "successful" | "unsuccessful";
+
 export interface IOrderFilters {
     page?: number;
     limit?: number;
     status?: string;
+    group?: OrderGroup;
     paymentStatus?: string;
     paymentMethod?: string;
     search?: string;

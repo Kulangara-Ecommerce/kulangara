@@ -19,12 +19,14 @@ import {
   FiBarChart2, 
   FiMail, 
   FiLogOut,
-  FiMenu
+  FiMenu,
+  FiXCircle
 } from "react-icons/fi";
 
 const navigationItems = [
   { name: "Dashboard", href: "/admin", icon: FiHome },
   { name: "Orders", href: "/admin/orders", icon: FiShoppingBag },
+  { name: "Cancelled & Failed", href: "/admin/cancelled-orders", icon: FiXCircle },
   { name: "Products", href: "/admin/products", icon: FiPackage },
   { name: "Categories", href: "/admin/categories", icon: FiTag },
   { name: "Coupons", href: "/admin/coupons", icon: FiPercent },
